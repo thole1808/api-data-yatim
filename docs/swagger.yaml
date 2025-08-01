@@ -1,0 +1,47 @@
+basePath: /
+definitions:
+  models.RT:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      number:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API untuk mengelola data RT, RW, dan Pendidikan menggunakan API_KEY
+    & Bearer Token.
+  title: API Data Yatim
+  version: "1.0"
+paths:
+  /api/rt:
+    get:
+      description: Ambil semua data RT
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.RT'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: Get all RT
+      tags:
+      - RT
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: API_KEY
+    type: apiKey
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

@@ -1,0 +1,25 @@
+package routes
+
+import (
+	"api-data-yatim/controllers"
+	"api-data-yatim/middlewares"
+
+	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+)
+
+func SetupRouter() *gin.Engine {
+	r := gin.Default()
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	api := r.Group("/api", middlewares.APIKeyMiddleware(), middlewares.AuthMiddleware())
+	{
+		api.GET("/rt", controllers.GetRT)
+		// api.GET("/rw", controllers.GetRW)
+		// api.GET("/pendidikan", controllers.GetPendidikan)
+	}
+
+	return r
+}
