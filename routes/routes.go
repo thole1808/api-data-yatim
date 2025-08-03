@@ -14,6 +14,9 @@ func SetupRouter() *gin.Engine {
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
+	// Endpoint login (tanpa API_KEY dan Bearer)
+	r.POST("/login", controllers.Login)
+
 	api := r.Group("/api", middlewares.APIKeyMiddleware(), middlewares.AuthMiddleware())
 	{
 		api.GET("/rt", controllers.GetRT)

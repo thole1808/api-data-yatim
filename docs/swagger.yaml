@@ -1,5 +1,12 @@
 basePath: /
 definitions:
+  controllers.LoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
   models.RT:
     properties:
       id:
@@ -35,6 +42,31 @@ paths:
       summary: Get all RT
       tags:
       - RT
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login menggunakan username dan password untuk mendapatkan token
+        JWT.
+      parameters:
+      - description: Login Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Login untuk mendapatkan JWT Token
+      tags:
+      - Auth
 securityDefinitions:
   ApiKeyAuth:
     in: header
