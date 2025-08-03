@@ -19,8 +19,8 @@ func SetupRouter() *gin.Engine {
 
 	api := r.Group("/api", middlewares.APIKeyMiddleware(), middlewares.AuthMiddleware())
 	{
-		api.GET("/rt", controllers.GetRTPerPage)
-		api.GET("/rt/all", controllers.GetAllRT)
+		api.GET("/rt", controllers.GetRTPerPage) // ✅ RT per halaman
+		api.GET("/rt/all", controllers.GetAllRT) // ✅ RT semua data
 		// api.GET("/rw", controllers.GetRW)
 		// api.GET("/pendidikan", controllers.GetPendidikan)
 	}

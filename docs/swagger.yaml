@@ -8,21 +8,25 @@ definitions:
         description: bisa username atau email
         type: string
     type: object
-  models.RT:
+  models.ErrorResponse:
     properties:
-      created_at:
-        type: string
-      created_by:
-        type: string
-      id:
+      code:
+        example: 400
         type: integer
-      number:
+      error:
         type: string
-      rw_id:
+      message:
+        example: Bad Request
+        type: string
+    type: object
+  models.GenericResponse:
+    properties:
+      code:
+        example: 200
         type: integer
-      updated_at:
-        type: string
-      updated_by:
+      data: {}
+      message:
+        example: Success
         type: string
     type: object
 host: localhost:8080
@@ -51,8 +55,15 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties: true
-            type: object
+            $ref: '#/definitions/models.GenericResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
       security:
       - BearerAuth: []
       - ApiKeyAuth: []
@@ -68,9 +79,11 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/models.RT'
-            type: array
+            $ref: '#/definitions/models.GenericResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
       security:
       - BearerAuth: []
       - ApiKeyAuth: []

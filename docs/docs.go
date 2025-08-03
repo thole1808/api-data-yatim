@@ -51,8 +51,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/models.GenericResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -80,10 +91,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/models.RT"
-                            }
+                            "$ref": "#/definitions/models.GenericResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -140,29 +154,33 @@ const docTemplate = `{
                 }
             }
         },
-        "models.RT": {
+        "models.ErrorResponse": {
             "type": "object",
             "properties": {
-                "created_at": {
+                "code": {
+                    "type": "integer",
+                    "example": 400
+                },
+                "error": {
                     "type": "string"
                 },
-                "created_by": {
-                    "type": "string"
+                "message": {
+                    "type": "string",
+                    "example": "Bad Request"
+                }
+            }
+        },
+        "models.GenericResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 200
                 },
-                "id": {
-                    "type": "integer"
-                },
-                "number": {
-                    "type": "string"
-                },
-                "rw_id": {
-                    "type": "integer"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "updated_by": {
-                    "type": "string"
+                "data": {},
+                "message": {
+                    "type": "string",
+                    "example": "Success"
                 }
             }
         }
