@@ -25,14 +25,57 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Ambil daftar RT, membutuhkan Bearer Token dan API_KEY",
+                "description": "Ambil daftar RT per halaman.",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "RT"
                 ],
-                "summary": "Get list of RT",
+                "summary": "Get RT dengan pagination",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Halaman (default 1)",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Jumlah data per halaman (default 10)",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/rt/all": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Ambil semua data RT tanpa pagination.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "RT"
+                ],
+                "summary": "Get semua RT",
                 "responses": {
                     "200": {
                         "description": "OK",
