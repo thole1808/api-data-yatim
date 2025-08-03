@@ -19,19 +19,20 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
+                        "BearerAuth": []
                     },
                     {
-                        "BearerAuth": []
+                        "ApiKeyAuth": []
                     }
                 ],
+                "description": "Ambil daftar RT, membutuhkan Bearer Token dan API_KEY",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "RT"
                 ],
-                "summary": "Get all RT",
+                "summary": "Get list of RT",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -103,8 +104,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "created_by": {
-                    "description": "nullable",
-                    "type": "integer"
+                    "type": "string"
                 },
                 "id": {
                     "type": "integer"
@@ -119,8 +119,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "updated_by": {
-                    "description": "nullable",
-                    "type": "integer"
+                    "type": "string"
                 }
             }
         }

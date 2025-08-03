@@ -13,8 +13,7 @@ definitions:
       created_at:
         type: string
       created_by:
-        description: nullable
-        type: integer
+        type: string
       id:
         type: integer
       number:
@@ -24,8 +23,7 @@ definitions:
       updated_at:
         type: string
       updated_by:
-        description: nullable
-        type: integer
+        type: string
     type: object
 host: localhost:8080
 info:
@@ -37,6 +35,7 @@ info:
 paths:
   /api/rt:
     get:
+      description: Ambil daftar RT, membutuhkan Bearer Token dan API_KEY
       produces:
       - application/json
       responses:
@@ -47,9 +46,9 @@ paths:
               $ref: '#/definitions/models.RT'
             type: array
       security:
-      - ApiKeyAuth: []
       - BearerAuth: []
-      summary: Get all RT
+      - ApiKeyAuth: []
+      summary: Get list of RT
       tags:
       - RT
   /login:

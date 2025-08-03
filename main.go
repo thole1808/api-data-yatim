@@ -40,7 +40,7 @@ func main() {
 
 	// Auto migrate
 	// config.DB.AutoMigrate(&models.User{}, &models.RT{}, &models.RW{}, &models.Pendidikan{})
-	config.DB.AutoMigrate(&models.RT{}, &models.RW{}, &models.Pendidikan{})
+	// config.DB.AutoMigrate(&models.RT{}, &models.RW{}, &models.Pendidikan{})
 
 	// Seeder user admin
 	// hashedPass, _ := bcrypt.GenerateFromPassword([]byte("admin123"), bcrypt.DefaultCost)
