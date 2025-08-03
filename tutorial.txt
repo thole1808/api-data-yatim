@@ -22,6 +22,7 @@ go mod tidy
 
 Khusus untuk generate Dokumentasi
 ==================================
+swag init
 rm -rf docs
 swag init --parseDependency --parseInternal
 swag init --parseDependency --parseInternal -g main.go

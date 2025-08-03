@@ -25,7 +25,6 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Ambil semua data RT",
                 "produces": [
                     "application/json"
                 ],
@@ -48,7 +47,7 @@ const docTemplate = `{
         },
         "/login": {
             "post": {
-                "description": "Login menggunakan username dan password untuk mendapatkan token JWT.",
+                "description": "Login menggunakan username/email untuk mendapatkan token JWT.",
                 "consumes": [
                     "application/json"
                 ],
@@ -92,6 +91,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "username": {
+                    "description": "bisa username atau email",
                     "type": "string"
                 }
             }
@@ -99,14 +99,28 @@ const docTemplate = `{
         "models.RT": {
             "type": "object",
             "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "description": "nullable",
+                    "type": "integer"
+                },
                 "id": {
                     "type": "integer"
                 },
-                "name": {
-                    "type": "string"
-                },
                 "number": {
                     "type": "string"
+                },
+                "rw_id": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "description": "nullable",
+                    "type": "integer"
                 }
             }
         }

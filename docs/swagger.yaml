@@ -5,16 +5,27 @@ definitions:
       password:
         type: string
       username:
+        description: bisa username atau email
         type: string
     type: object
   models.RT:
     properties:
+      created_at:
+        type: string
+      created_by:
+        description: nullable
+        type: integer
       id:
         type: integer
-      name:
-        type: string
       number:
         type: string
+      rw_id:
+        type: integer
+      updated_at:
+        type: string
+      updated_by:
+        description: nullable
+        type: integer
     type: object
 host: localhost:8080
 info:
@@ -26,7 +37,6 @@ info:
 paths:
   /api/rt:
     get:
-      description: Ambil semua data RT
       produces:
       - application/json
       responses:
@@ -46,8 +56,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: Login menggunakan username dan password untuk mendapatkan token
-        JWT.
+      description: Login menggunakan username/email untuk mendapatkan token JWT.
       parameters:
       - description: Login Request
         in: body

@@ -11,6 +11,11 @@
 // @securityDefinitions.apikey BearerAuth
 // @in header
 // @name Authorization
+
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+
 package main
 
 import (
@@ -19,6 +24,7 @@ import (
 	"api-data-yatim/routes"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/joho/godotenv"
 	"golang.org/x/crypto/bcrypt"
@@ -28,6 +34,7 @@ import (
 
 func main() {
 	_ = godotenv.Load()
+	fmt.Println("ENV API_KEY:", os.Getenv("API_KEY")) // Debug
 	config.InitDB()
 	seedAdminAPI()
 
