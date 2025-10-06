@@ -3,7 +3,10 @@ package routes
 import (
 	"api-data-yatim/controllers"
 	"api-data-yatim/middlewares"
+	"os"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -11,6 +14,22 @@ import (
 
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
+
+	// Ambil allowed origins dari env
+	// originsEnv := os.Getenv("URL_API_PROXY")
+	// // misal: "http://localhost:5173,http://localhost:5174,http://localhost:5222"
+	// allowOrigins := strings.Split(originsEnv, ",")
+
+	// ⚡ CORS Middleware
+	r.Use(cors.New(cors.Config{
+
+		AllowOrigins:     []string{os.Getenv("FRONTEND_URL")},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization", "API_KEY"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
