@@ -15,6 +15,40 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/profil-yayasan/all": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Ambil semua data profil yayasan tanpa pagination.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profil Yayasan"
+                ],
+                "summary": "Get semua Profil Yayasan",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.GenericResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/rt": {
             "get": {
                 "security": [
@@ -209,8 +243,8 @@ var SwaggerInfo = &swag.Spec{
 	Description:      "API untuk mengelola data RT, RW, dan Pendidikan menggunakan API_KEY & Bearer Token.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
-	// LeftDelim:        "{{",
-	// RightDelim:       "}}",
+	LeftDelim:        "{{",
+	RightDelim:       "}}",
 }
 
 func init() {

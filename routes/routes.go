@@ -42,6 +42,9 @@ func SetupRouter() *gin.Engine {
 		api.GET("/rt/all", controllers.GetAllRT) // ✅ RT semua data
 		// api.GET("/rw", controllers.GetRW)
 		// api.GET("/pendidikan", controllers.GetPendidikan)
+
+		// ===== Profil Yayasan =====
+		api.GET("/profil-yayasan/all", controllers.GetAllYayasan)
 	}
 
 	return r

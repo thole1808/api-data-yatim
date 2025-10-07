@@ -9,6 +9,40 @@
     "host": "localhost:8080",
     "basePath": "/",
     "paths": {
+        "/api/profil-yayasan/all": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Ambil semua data profil yayasan tanpa pagination.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profil Yayasan"
+                ],
+                "summary": "Get semua Profil Yayasan",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.GenericResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/rt": {
             "get": {
                 "security": [
