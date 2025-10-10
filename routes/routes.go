@@ -36,6 +36,9 @@ func SetupRouter() *gin.Engine {
 	// Endpoint login (tanpa API_KEY dan Bearer)
 	r.POST("/login", controllers.Login)
 
+	// ✅ Route publik untuk gambar — tidak butuh JWT/API key
+	r.GET("/api/galeri/:filename", controllers.ProxyLaravelImage)
+
 	api := r.Group("/api", middlewares.APIKeyMiddleware(), middlewares.AuthMiddleware())
 	{
 		api.GET("/rt", controllers.GetRTPerPage)
@@ -48,6 +51,7 @@ func SetupRouter() *gin.Engine {
 
 		// ===== Aktivitas =====
 		api.GET("/aktivitas/all", controllers.GetAllActivity)
+
 	}
 
 	return r
