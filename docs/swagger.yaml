@@ -37,6 +37,26 @@ info:
   title: API Data Yatim
   version: "1.0"
 paths:
+  /api/aktivitas/all:
+    get:
+      description: Ambil semua data aktivitas beserta gambar-gambarnya
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GenericResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      - ApiKeyAuth: []
+      summary: Get semua data aktivitas
+      tags:
+      - Aktivitas
   /api/profil-yayasan/all:
     get:
       description: Ambil semua data profil yayasan tanpa pagination.

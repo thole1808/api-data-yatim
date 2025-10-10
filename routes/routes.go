@@ -38,13 +38,16 @@ func SetupRouter() *gin.Engine {
 
 	api := r.Group("/api", middlewares.APIKeyMiddleware(), middlewares.AuthMiddleware())
 	{
-		api.GET("/rt", controllers.GetRTPerPage) // ✅ RT per halaman
-		api.GET("/rt/all", controllers.GetAllRT) // ✅ RT semua data
+		api.GET("/rt", controllers.GetRTPerPage)
+		api.GET("/rt/all", controllers.GetAllRT)
 		// api.GET("/rw", controllers.GetRW)
 		// api.GET("/pendidikan", controllers.GetPendidikan)
 
 		// ===== Profil Yayasan =====
 		api.GET("/profil-yayasan/all", controllers.GetAllYayasan)
+
+		// ===== Aktivitas =====
+		api.GET("/aktivitas/all", controllers.GetAllActivity)
 	}
 
 	return r
