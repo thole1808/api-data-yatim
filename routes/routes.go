@@ -52,6 +52,10 @@ func SetupRouter() *gin.Engine {
 		// ===== Aktivitas =====
 		api.GET("/aktivitas/all", controllers.GetAllActivity)
 
+		// ===== Struktur Organisasi =====
+		api.GET("/struktur-organisasi/all", controllers.GetAllStrukturOrganisasi)
+		api.GET("/struktur-organisasi/foto/:filename", controllers.ProxyStrukturOrganisasiFoto)
+
 	}
 
 	return r

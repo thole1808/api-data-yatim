@@ -165,6 +165,40 @@
                 }
             }
         },
+        "/api/struktur-organisasi/all": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Ambil semua anggota Struktur Organisasi, beserta nama jabatan dari master jabatan dan URL foto",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "StrukturOrganisasi"
+                ],
+                "summary": "Ambil semua anggota Struktur Organisasi",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.GenericResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "description": "Login menggunakan username/email untuk mendapatkan token JWT.",

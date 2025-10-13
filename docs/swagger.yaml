@@ -131,6 +131,27 @@ paths:
       summary: Get semua RT
       tags:
       - RT
+  /api/struktur-organisasi/all:
+    get:
+      description: Ambil semua anggota Struktur Organisasi, beserta nama jabatan dari
+        master jabatan dan URL foto
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GenericResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      - ApiKeyAuth: []
+      summary: Ambil semua anggota Struktur Organisasi
+      tags:
+      - StrukturOrganisasi
   /login:
     post:
       consumes:
