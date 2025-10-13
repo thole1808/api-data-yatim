@@ -181,7 +181,7 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Ambil semua anggota Struktur Organisasi, beserta nama jabatan dari master jabatan dan URL foto",
+                "description": "Ambil semua anggota Struktur Organisasi beserta jabatan dan URL foto (proxy)",
                 "produces": [
                     "application/json"
                 ],
@@ -200,6 +200,41 @@ const docTemplate = `{
                         "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/struktur-organisasi/foto/{filename}": {
+            "get": {
+                "description": "Menampilkan foto anggota melalui Golang (proxy Laravel atau storage)",
+                "produces": [
+                    "image/png"
+                ],
+                "tags": [
+                    "StrukturOrganisasi"
+                ],
+                "summary": "Proxy foto anggota Struktur Organisasi",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Nama file foto",
+                        "name": "filename",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
                         }
                     }
                 }
@@ -255,6 +290,10 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "gin.H": {
+            "type": "object",
+            "additionalProperties": {}
         },
         "models.ErrorResponse": {
             "type": "object",

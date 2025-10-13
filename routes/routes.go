@@ -39,6 +39,8 @@ func SetupRouter() *gin.Engine {
 	// ✅ Route publik untuk gambar — tidak butuh JWT/API key
 	r.GET("/api/galeri/:filename", controllers.ProxyLaravelImage)
 
+	r.GET("/struktur-organisasi/foto/:filename", controllers.ProxyStrukturOrganisasiFoto)
+
 	api := r.Group("/api", middlewares.APIKeyMiddleware(), middlewares.AuthMiddleware())
 	{
 		api.GET("/rt", controllers.GetRTPerPage)
@@ -54,7 +56,7 @@ func SetupRouter() *gin.Engine {
 
 		// ===== Struktur Organisasi =====
 		api.GET("/struktur-organisasi/all", controllers.GetAllStrukturOrganisasi)
-		api.GET("/struktur-organisasi/foto/:filename", controllers.ProxyStrukturOrganisasiFoto)
+		// api.GET("/struktur-organisasi/foto/:filename", controllers.ProxyStrukturOrganisasiFoto)
 
 	}
 

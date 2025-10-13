@@ -13,7 +13,7 @@ import (
 
 // GetAllStrukturOrganisasi godoc
 // @Summary Ambil semua anggota Struktur Organisasi
-// @Description Ambil semua anggota Struktur Organisasi, beserta nama jabatan dari master jabatan dan URL foto
+// @Description Ambil semua anggota Struktur Organisasi beserta jabatan dan URL foto (proxy)
 // @Tags StrukturOrganisasi
 // @Security BearerAuth
 // @Security ApiKeyAuth
@@ -37,13 +37,13 @@ func GetAllStrukturOrganisasi(c *gin.Context) {
 		return
 	}
 
-	// Ambil base URL API untuk foto
+	// Ambil base URL API Golang untuk proxy foto
 	baseURL := os.Getenv("BASE_URL")
 	if baseURL == "" {
 		baseURL = "http://localhost:8080"
 	}
 
-	// Ubah path foto menjadi URL lengkap
+	// Update path foto menjadi URL proxy
 	for i := range struktur {
 		if struktur[i].Foto != nil && *struktur[i].Foto != "" {
 			fileParts := strings.Split(*struktur[i].Foto, "/")
@@ -59,25 +59,43 @@ func GetAllStrukturOrganisasi(c *gin.Context) {
 	})
 }
 
-// Helper untuk pointer string
-func ptr(s string) *string {
-	return &s
-}
-
-// ProxyStrukturOrganisasiFoto -> endpoint proxy foto anggota
+// ProxyStrukturOrganisasiFoto godoc
+// @Summary Proxy foto anggota Struktur Organisasi
+// @Description Menampilkan foto anggota melalui Golang (proxy Laravel atau storage)
+// @Tags StrukturOrganisasi
+// @Produce image/png
+// @Param filename path string true "Nama file foto"
+// @Success 200 {file} file
+// @Failure 404 {object} gin.H
+// @Router /api/struktur-organisasi/foto/{filename} [get]
 func ProxyStrukturOrganisasiFoto(c *gin.Context) {
 	filename := c.Param("filename")
-	// Path penyimpanan di Laravel atau server storage
-	imagePath := "storage/uploads/struktur_organisasi/" + filename
 
-	file, err := os.Open(imagePath)
+	// Path penyimpanan foto di Laravel atau server storage
+	laravelBase := os.Getenv("LARAVEL_BASE_URL")
+	if laravelBase == "" {
+		laravelBase = "http://localhost:8000"
+	}
+
+	imageURL := laravelBase + "/storage/uploads/struktur_organisasi/" + filename
+
+	resp, err := http.Get(imageURL)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Image not found"})
+		c.JSON(http.StatusBadGateway, gin.H{"error": "Failed to fetch image from storage"})
 		return
 	}
-	defer file.Close()
+	defer resp.Body.Close()
 
-	// Set header sesuai tipe file
-	c.Header("Content-Type", "image/png")
-	_, _ = io.Copy(c.Writer, file)
+	if resp.StatusCode != http.StatusOK {
+		c.JSON(resp.StatusCode, gin.H{"error": "Image not found"})
+		return
+	}
+
+	c.Header("Content-Type", resp.Header.Get("Content-Type"))
+	_, _ = io.Copy(c.Writer, resp.Body)
+}
+
+// Helper pointer string
+func ptr(s string) *string {
+	return &s
 }
