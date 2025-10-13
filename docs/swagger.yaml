@@ -39,7 +39,8 @@ info:
 paths:
   /api/aktivitas/all:
     get:
-      description: Ambil semua data aktivitas beserta gambar dan nama kategori
+      description: Ambil semua data aktivitas yang berstatus published dan sedang
+        aktif (tanggal mulai <= sekarang <= tanggal selesai), beserta gambar & kategori
       produces:
       - application/json
       responses:

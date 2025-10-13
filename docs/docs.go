@@ -25,7 +25,7 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Ambil semua data aktivitas beserta gambar dan nama kategori",
+                "description": "Ambil semua data aktivitas yang berstatus published dan sedang aktif (tanggal mulai \u003c= sekarang \u003c= tanggal selesai), beserta gambar \u0026 kategori",
                 "produces": [
                     "application/json"
                 ],
