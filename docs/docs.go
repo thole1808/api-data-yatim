@@ -181,7 +181,7 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Ambil semua anggota Struktur Organisasi beserta jabatan dan URL foto (proxy)",
+                "description": "Ambil semua anggota Struktur Organisasi beserta jabatan, parent (atasan), dan URL foto (proxy)",
                 "produces": [
                     "application/json"
                 ],

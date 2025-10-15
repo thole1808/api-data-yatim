@@ -11,9 +11,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// ==============================
+// 📘 GET: Semua Struktur Organisasi
+// ==============================
+
 // GetAllStrukturOrganisasi godoc
 // @Summary Ambil semua anggota Struktur Organisasi
-// @Description Ambil semua anggota Struktur Organisasi beserta jabatan dan URL foto (proxy)
+// @Description Ambil semua anggota Struktur Organisasi beserta jabatan, parent (atasan), dan URL foto (proxy)
 // @Tags StrukturOrganisasi
 // @Security BearerAuth
 // @Security ApiKeyAuth
@@ -24,9 +28,11 @@ import (
 func GetAllStrukturOrganisasi(c *gin.Context) {
 	var struktur []models.StrukturOrganisasi
 
+	// 🔹 Ambil data lengkap beserta relasi
 	if err := config.DB.
-		Preload("Jabatan"). // pastikan relasi di model
-		Order("urutan asc").
+		Preload("Jabatan").
+		Preload("Parent.Jabatan"). // preload parent dan jabatannya
+		Order("urutan ASC").
 		Find(&struktur).Error; err != nil {
 
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
@@ -37,13 +43,13 @@ func GetAllStrukturOrganisasi(c *gin.Context) {
 		return
 	}
 
-	// Ambil base URL API Golang untuk proxy foto
+	// 🔹 Base URL untuk proxy foto
 	baseURL := os.Getenv("BASE_URL")
 	if baseURL == "" {
 		baseURL = "http://localhost:8080"
 	}
 
-	// Update path foto menjadi URL proxy
+	// 🔹 Update path foto menjadi URL proxy
 	for i := range struktur {
 		if struktur[i].Foto != nil && *struktur[i].Foto != "" {
 			fileParts := strings.Split(*struktur[i].Foto, "/")
@@ -59,6 +65,10 @@ func GetAllStrukturOrganisasi(c *gin.Context) {
 	})
 }
 
+// ==============================
+// 🖼️ GET: Proxy Foto Struktur Organisasi
+// ==============================
+
 // ProxyStrukturOrganisasiFoto godoc
 // @Summary Proxy foto anggota Struktur Organisasi
 // @Description Menampilkan foto anggota melalui Golang (proxy Laravel atau storage)
@@ -71,7 +81,7 @@ func GetAllStrukturOrganisasi(c *gin.Context) {
 func ProxyStrukturOrganisasiFoto(c *gin.Context) {
 	filename := c.Param("filename")
 
-	// Path penyimpanan foto di Laravel atau server storage
+	// 🔹 Base URL Laravel
 	laravelBase := os.Getenv("LARAVEL_BASE_URL")
 	if laravelBase == "" {
 		laravelBase = "http://localhost:8000"
@@ -79,6 +89,7 @@ func ProxyStrukturOrganisasiFoto(c *gin.Context) {
 
 	imageURL := laravelBase + "/storage/uploads/struktur_organisasi/" + filename
 
+	// 🔹 Request gambar dari Laravel
 	resp, err := http.Get(imageURL)
 	if err != nil {
 		c.JSON(http.StatusBadGateway, gin.H{"error": "Failed to fetch image from storage"})
@@ -91,11 +102,15 @@ func ProxyStrukturOrganisasiFoto(c *gin.Context) {
 		return
 	}
 
+	// 🔹 Return langsung stream gambar
 	c.Header("Content-Type", resp.Header.Get("Content-Type"))
 	_, _ = io.Copy(c.Writer, resp.Body)
 }
 
-// Helper pointer string
+// ==============================
+// 🔧 Helper
+// ==============================
+
 func ptr(s string) *string {
 	return &s
 }
