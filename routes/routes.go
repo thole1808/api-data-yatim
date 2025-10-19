@@ -41,7 +41,7 @@ func SetupRouter() *gin.Engine {
 
 	r.GET("/api/struktur-organisasi/foto/:filename", controllers.ProxyStrukturOrganisasiFoto)
 
-	r.GET("/api/mitra/foto/:filename", controllers.ProxyMitraLogo)
+	r.GET("/api/mitra/logo/:filename", controllers.ProxyMitraLogo)
 
 	api := r.Group("/api", middlewares.APIKeyMiddleware(), middlewares.AuthMiddleware())
 	{
