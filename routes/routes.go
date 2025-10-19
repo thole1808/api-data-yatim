@@ -41,6 +41,8 @@ func SetupRouter() *gin.Engine {
 
 	r.GET("/api/struktur-organisasi/foto/:filename", controllers.ProxyStrukturOrganisasiFoto)
 
+	r.GET("/api/mitra/foto/:filename", controllers.ProxyMitraLogo)
+
 	api := r.Group("/api", middlewares.APIKeyMiddleware(), middlewares.AuthMiddleware())
 	{
 		api.GET("/rt", controllers.GetRTPerPage)
@@ -56,6 +58,10 @@ func SetupRouter() *gin.Engine {
 
 		// ===== Struktur Organisasi =====
 		api.GET("/struktur-organisasi/all", controllers.GetAllStrukturOrganisasi)
+		// api.GET("/struktur-organisasi/foto/:filename", controllers.ProxyStrukturOrganisasiFoto)
+
+		// ===== Mita =====
+		api.GET("/mitra/all", controllers.GetAllMitra)
 		// api.GET("/struktur-organisasi/foto/:filename", controllers.ProxyStrukturOrganisasiFoto)
 
 	}

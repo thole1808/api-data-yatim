@@ -61,6 +61,50 @@ paths:
       summary: Get semua data aktivitas
       tags:
       - Aktivitas
+  /api/mitra/all:
+    get:
+      description: Mengambil semua data Mitra beserta kategori_mitra dan URL logo
+        (proxy dari Laravel storage)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GenericResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      - ApiKeyAuth: []
+      summary: Ambil semua Mitra
+      tags:
+      - Mitra
+  /api/mitra/logo/{filename}:
+    get:
+      description: Menampilkan logo mitra melalui Golang (proxy dari Laravel storage)
+      parameters:
+      - description: Nama file logo
+        in: path
+        name: filename
+        required: true
+        type: string
+      produces:
+      - image/png
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: file
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Proxy logo mitra
+      tags:
+      - Mitra
   /api/profil-yayasan/all:
     get:
       description: Ambil semua data profil yayasan tanpa pagination.

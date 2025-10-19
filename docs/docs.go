@@ -49,6 +49,75 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/mitra/all": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Mengambil semua data Mitra beserta kategori_mitra dan URL logo (proxy dari Laravel storage)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Mitra"
+                ],
+                "summary": "Ambil semua Mitra",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.GenericResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/mitra/logo/{filename}": {
+            "get": {
+                "description": "Menampilkan logo mitra melalui Golang (proxy dari Laravel storage)",
+                "produces": [
+                    "image/png"
+                ],
+                "tags": [
+                    "Mitra"
+                ],
+                "summary": "Proxy logo mitra",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Nama file logo",
+                        "name": "filename",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
         "/api/profil-yayasan/all": {
             "get": {
                 "security": [
