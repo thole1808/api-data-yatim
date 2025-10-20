@@ -137,34 +137,40 @@ func AddMitraPersonal(c *gin.Context) {
 		Metode string `form:"metode"`
 	}
 
+	// 🔹 Validasi form-data
 	if err := c.ShouldBind(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Data form tidak lengkap"})
 		return
 	}
 
-	// 🔹 Ambil file bukti upload (opsional)
+	// 🔹 Upload file bukti (opsional)
 	file, err := c.FormFile("bukti")
-	var filePath *string
+	var relativePath *string
 	if err == nil {
-		uploadDir := "storage/uploads/mitra"
+		// Buat folder penyimpanan
+		uploadDir := filepath.Join("storage", "uploads", "mitra", "logo")
 		os.MkdirAll(uploadDir, os.ModePerm)
 
-		filename := strings.ReplaceAll(input.Nama, " ", "_") + "_" + file.Filename
-		fullPath := filepath.Join(uploadDir, filename)
+		// Generate nama file unik
+		ext := filepath.Ext(file.Filename)
+		randomName := helpers.RandomString(40) + ext
+		fullPath := filepath.Join(uploadDir, randomName)
 
+		// Simpan file fisik
 		if err := c.SaveUploadedFile(file, fullPath); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal menyimpan bukti transfer"})
 			return
 		}
-		filePath = &fullPath
+
+		// Simpan path relatif ke DB
+		relative := filepath.Join("uploads", "mitra", "logo", randomName)
+		relativePath = &relative
 	}
 
-	// 🔹 Pastikan kategori personal ada
+	// 🔹 Pastikan kategori personal ada (id = 1)
 	var kategori models.KategoriMitra
 	if err := config.DB.First(&kategori, 3).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Kategori 'Personal' belum tersedia di database",
-		})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Kategori 'Personal' belum tersedia di database"})
 		return
 	}
 
@@ -172,7 +178,7 @@ func AddMitraPersonal(c *gin.Context) {
 	mitra := models.Mitra{
 		Nama:            input.Nama,
 		Deskripsi:       helpers.Ptr(input.Pesan),
-		Logo:            filePath,
+		Logo:            relativePath,
 		KategoriMitraID: &kategori.ID,
 	}
 
