@@ -76,7 +76,7 @@ func GetAllStrukturOrganisasi(c *gin.Context) {
 // @Produce image/png
 // @Param filename path string true "Nama file foto"
 // @Success 200 {file} file
-// @Failure 404 {object} gin.H
+// @Failure 404 {object} models.ErrorResponse
 // @Router /api/struktur-organisasi/foto/{filename} [get]
 func ProxyStrukturOrganisasiFoto(c *gin.Context) {
 	filename := c.Param("filename")

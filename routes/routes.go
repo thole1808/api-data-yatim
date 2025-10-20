@@ -62,6 +62,7 @@ func SetupRouter() *gin.Engine {
 
 		// ===== Mita =====
 		api.GET("/mitra/all", controllers.GetAllMitra)
+		api.POST("/mitra/personal", controllers.AddMitraPersonal)
 		// api.GET("/struktur-organisasi/foto/:filename", controllers.ProxyStrukturOrganisasiFoto)
 
 	}

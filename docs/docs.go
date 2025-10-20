@@ -112,7 +112,84 @@ const docTemplate = `{
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/mitra/personal": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Menambahkan data donasi personal (tanpa relasi langsung ke mitra lain). Data dikirim via form-data beserta bukti transfer.",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Donasi"
+                ],
+                "summary": "Tambah Donasi Personal",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Nama Donatur",
+                        "name": "nama",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Jumlah Donasi (Rp)",
+                        "name": "jumlah",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Pesan Donasi",
+                        "name": "pesan",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Metode Pembayaran (qris/bank)",
+                        "name": "metode",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "Upload Bukti Transfer",
+                        "name": "bukti",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Mitra"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -303,7 +380,7 @@ const docTemplate = `{
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -360,10 +437,6 @@ const docTemplate = `{
                 }
             }
         },
-        "gin.H": {
-            "type": "object",
-            "additionalProperties": {}
-        },
         "models.ErrorResponse": {
             "type": "object",
             "properties": {
@@ -391,6 +464,58 @@ const docTemplate = `{
                 "message": {
                     "type": "string",
                     "example": "Success"
+                }
+            }
+        },
+        "models.KategoriMitra": {
+            "type": "object",
+            "properties": {
+                "deskripsi": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "keterangan": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Mitra": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "deskripsi": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "kategori_mitra": {
+                    "$ref": "#/definitions/models.KategoriMitra"
+                },
+                "kategori_mitra_id": {
+                    "type": "integer"
+                },
+                "logo": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                },
+                "tanggal_mulai": {
+                    "type": "string"
+                },
+                "tanggal_selesai": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
                 }
             }
         }
