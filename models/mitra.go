@@ -110,17 +110,34 @@ func (KategoriMitra) TableName() string {
 // ==============================
 // 💰 Model: Donasi
 // ==============================
+// type Donasi struct {
+// 	ID        uint      `json:"id" gorm:"primaryKey"`
+// 	MitraID   uint      `json:"mitra_id"`
+// 	Nama      string    `json:"nama"` // 🔹 Tambahkan kolom nama
+// 	Jumlah    string    `json:"jumlah"`
+// 	Pesan     string    `json:"pesan"`
+// 	Metode    string    `json:"metode"`
+// 	Status    string    `json:"status" gorm:"default:'pending'"`
+// 	Mitra     *Mitra    `json:"mitra,omitempty" gorm:"foreignKey:MitraID;references:ID"`
+// 	CreatedAt time.Time `json:"created_at"`
+// 	UpdatedAt time.Time `json:"updated_at"`
+// }
+
+//	func (Donasi) TableName() string {
+//		return "donasi"
+//	}
 type Donasi struct {
-	ID        uint      `json:"id" gorm:"primaryKey"`
-	MitraID   uint      `json:"mitra_id"`
-	Nama      string    `json:"nama"` // 🔹 Tambahkan kolom nama
-	Jumlah    string    `json:"jumlah"`
-	Pesan     string    `json:"pesan"`
-	Metode    string    `json:"metode"`
-	Status    string    `json:"status" gorm:"default:'pending'"`
-	Mitra     *Mitra    `json:"mitra,omitempty" gorm:"foreignKey:MitraID;references:ID"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID            uint      `json:"id" gorm:"primaryKey"`
+	MitraID       uint      `json:"mitra_id"`
+	Nama          string    `json:"nama"`
+	Jumlah        string    `json:"jumlah"`
+	Pesan         string    `json:"pesan"`
+	Metode        string    `json:"metode"`
+	Status        string    `json:"status" gorm:"default:'pending'"`
+	BuktiTransfer *string   `json:"bukti_transfer,omitempty"`
+	Mitra         *Mitra    `json:"mitra,omitempty" gorm:"foreignKey:MitraID;references:ID"`
+	CreatedAt     time.Time `json:"created_at"`
+	UpdatedAt     time.Time `json:"updated_at"`
 }
 
 func (Donasi) TableName() string {

@@ -8,30 +8,6 @@ definitions:
         description: bisa username atau email
         type: string
     type: object
-  models.Donasi:
-    properties:
-      created_at:
-        type: string
-      id:
-        type: integer
-      jumlah:
-        type: string
-      metode:
-        type: string
-      mitra:
-        $ref: '#/definitions/models.Mitra'
-      mitra_id:
-        type: integer
-      nama:
-        description: "\U0001F539 Tambahkan kolom nama"
-        type: string
-      pesan:
-        type: string
-      status:
-        type: string
-      updated_at:
-        type: string
-    type: object
   models.ErrorResponse:
     properties:
       code:
@@ -51,45 +27,6 @@ definitions:
       data: {}
       message:
         example: Success
-        type: string
-    type: object
-  models.KategoriMitra:
-    properties:
-      deskripsi:
-        type: string
-      id:
-        type: integer
-      keterangan:
-        type: string
-      nama:
-        type: string
-    type: object
-  models.Mitra:
-    properties:
-      created_at:
-        type: string
-      deskripsi:
-        type: string
-      donasis:
-        description: Relasi ke Donasi
-        items:
-          $ref: '#/definitions/models.Donasi'
-        type: array
-      id:
-        type: integer
-      kategori_mitra:
-        $ref: '#/definitions/models.KategoriMitra'
-      kategori_mitra_id:
-        type: integer
-      logo:
-        type: string
-      nama:
-        type: string
-      tanggal_mulai:
-        type: string
-      tanggal_selesai:
-        type: string
-      updated_at:
         type: string
     type: object
 host: localhost:8080
@@ -165,56 +102,6 @@ paths:
       summary: Proxy logo mitra
       tags:
       - Mitra
-  /api/mitra/personal:
-    post:
-      consumes:
-      - multipart/form-data
-      description: Menambahkan data donasi personal (tanpa relasi langsung ke mitra
-        lain). Data dikirim via form-data beserta bukti transfer.
-      parameters:
-      - description: Nama Donatur
-        in: formData
-        name: nama
-        required: true
-        type: string
-      - description: Jumlah Donasi (Rp)
-        in: formData
-        name: jumlah
-        required: true
-        type: string
-      - description: Pesan Donasi
-        in: formData
-        name: pesan
-        type: string
-      - description: Metode Pembayaran (qris/bank)
-        in: formData
-        name: metode
-        type: string
-      - description: Upload Bukti Transfer
-        in: formData
-        name: bukti
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Mitra'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-      security:
-      - BearerAuth: []
-      - ApiKeyAuth: []
-      summary: Tambah Donasi Personal
-      tags:
-      - Donasi
   /api/profil-yayasan/all:
     get:
       description: Ambil semua data profil yayasan tanpa pagination.

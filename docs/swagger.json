@@ -112,83 +112,6 @@
                 }
             }
         },
-        "/api/mitra/personal": {
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    },
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Menambahkan data donasi personal (tanpa relasi langsung ke mitra lain). Data dikirim via form-data beserta bukti transfer.",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Donasi"
-                ],
-                "summary": "Tambah Donasi Personal",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Nama Donatur",
-                        "name": "nama",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Jumlah Donasi (Rp)",
-                        "name": "jumlah",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Pesan Donasi",
-                        "name": "pesan",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Metode Pembayaran (qris/bank)",
-                        "name": "metode",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "file",
-                        "description": "Upload Bukti Transfer",
-                        "name": "bukti",
-                        "in": "formData"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Mitra"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
         "/api/profil-yayasan/all": {
             "get": {
                 "security": [
@@ -431,42 +354,6 @@
                 }
             }
         },
-        "models.Donasi": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "jumlah": {
-                    "type": "string"
-                },
-                "metode": {
-                    "type": "string"
-                },
-                "mitra": {
-                    "$ref": "#/definitions/models.Mitra"
-                },
-                "mitra_id": {
-                    "type": "integer"
-                },
-                "nama": {
-                    "description": "🔹 Tambahkan kolom nama",
-                    "type": "string"
-                },
-                "pesan": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
         "models.ErrorResponse": {
             "type": "object",
             "properties": {
@@ -494,65 +381,6 @@
                 "message": {
                     "type": "string",
                     "example": "Success"
-                }
-            }
-        },
-        "models.KategoriMitra": {
-            "type": "object",
-            "properties": {
-                "deskripsi": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "keterangan": {
-                    "type": "string"
-                },
-                "nama": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.Mitra": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "deskripsi": {
-                    "type": "string"
-                },
-                "donasis": {
-                    "description": "Relasi ke Donasi",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Donasi"
-                    }
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "kategori_mitra": {
-                    "$ref": "#/definitions/models.KategoriMitra"
-                },
-                "kategori_mitra_id": {
-                    "type": "integer"
-                },
-                "logo": {
-                    "type": "string"
-                },
-                "nama": {
-                    "type": "string"
-                },
-                "tanggal_mulai": {
-                    "type": "string"
-                },
-                "tanggal_selesai": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
                 }
             }
         }

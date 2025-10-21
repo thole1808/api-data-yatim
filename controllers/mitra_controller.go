@@ -313,6 +313,89 @@ func ProxyMitraLogo(c *gin.Context) {
 // @Failure 400 {object} models.ErrorResponse
 // @Failure 500 {object} models.ErrorResponse
 // @Router /api/mitra/personal [post]
+// func AddMitraPersonal(c *gin.Context) {
+// 	var input struct {
+// 		Nama   string `form:"nama" binding:"required"`
+// 		Jumlah string `form:"jumlah" binding:"required"`
+// 		Pesan  string `form:"pesan"`
+// 		Metode string `form:"metode"`
+// 	}
+
+// 	if err := c.ShouldBind(&input); err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": "Data form tidak lengkap"})
+// 		return
+// 	}
+
+// 	// Upload file bukti opsional
+// 	file, err := c.FormFile("bukti")
+// 	var relativePath *string
+// 	if err == nil {
+// 		uploadDir := filepath.Join("storage", "uploads", "mitra", "logo")
+// 		os.MkdirAll(uploadDir, os.ModePerm)
+
+// 		ext := filepath.Ext(file.Filename)
+// 		randomName := helpers.RandomString(40) + ext
+// 		fullPath := filepath.Join(uploadDir, randomName)
+
+// 		if err := c.SaveUploadedFile(file, fullPath); err != nil {
+// 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal menyimpan bukti transfer"})
+// 			return
+// 		}
+
+// 		relative := filepath.Join("uploads", "mitra", "logo", randomName)
+// 		relativePath = &relative
+// 	}
+
+// 	// Ambil kategori "Personal" (id = 3 misalnya)
+// 	var kategori models.KategoriMitra
+// 	if err := config.DB.First(&kategori, 3).Error; err != nil {
+// 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Kategori 'Personal' belum tersedia di database"})
+// 		return
+// 	}
+
+// 	tx := config.DB.Begin()
+
+// 	// Simpan Mitra
+// 	mitra := models.Mitra{
+// 		Nama:            input.Nama,
+// 		Deskripsi:       helpers.Ptr(input.Pesan),
+// 		Logo:            relativePath,
+// 		KategoriMitraID: &kategori.ID,
+// 	}
+
+// 	if err := tx.Create(&mitra).Error; err != nil {
+// 		tx.Rollback()
+// 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal menyimpan data mitra"})
+// 		return
+// 	}
+
+// 	// ✅ Simpan Donasi (tambahkan nama)
+// 	donasi := models.Donasi{
+// 		MitraID: mitra.ID,
+// 		Nama:    input.Nama,
+// 		Jumlah:  input.Jumlah,
+// 		Pesan:   input.Pesan,
+// 		Metode:  input.Metode,
+// 		Status:  "pending",
+// 	}
+
+// 	if err := tx.Create(&donasi).Error; err != nil {
+// 		tx.Rollback()
+// 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal menyimpan data donasi"})
+// 		return
+// 	}
+
+// 	tx.Commit()
+
+// 	c.JSON(http.StatusOK, gin.H{
+// 		"message": "Donasi personal berhasil disimpan",
+// 		"data": gin.H{
+// 			"mitra":  mitra,
+// 			"donasi": donasi,
+// 		},
+// 	})
+// }
+
 func AddMitraPersonal(c *gin.Context) {
 	var input struct {
 		Nama   string `form:"nama" binding:"required"`
@@ -346,7 +429,7 @@ func AddMitraPersonal(c *gin.Context) {
 		relativePath = &relative
 	}
 
-	// Ambil kategori "Personal" (id = 3 misalnya)
+	// Ambil kategori "Personal"
 	var kategori models.KategoriMitra
 	if err := config.DB.First(&kategori, 3).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Kategori 'Personal' belum tersedia di database"})
@@ -369,14 +452,15 @@ func AddMitraPersonal(c *gin.Context) {
 		return
 	}
 
-	// ✅ Simpan Donasi (tambahkan nama)
+	// ✅ Simpan Donasi + bukti transfer
 	donasi := models.Donasi{
-		MitraID: mitra.ID,
-		Nama:    input.Nama,
-		Jumlah:  input.Jumlah,
-		Pesan:   input.Pesan,
-		Metode:  input.Metode,
-		Status:  "pending",
+		MitraID:       mitra.ID,
+		Nama:          input.Nama,
+		Jumlah:        input.Jumlah,
+		Pesan:         input.Pesan,
+		Metode:        input.Metode,
+		Status:        "pending",
+		BuktiTransfer: relativePath, // 🟢 Simpan path bukti ke field donasi
 	}
 
 	if err := tx.Create(&donasi).Error; err != nil {
