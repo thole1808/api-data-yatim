@@ -8,6 +8,30 @@ definitions:
         description: bisa username atau email
         type: string
     type: object
+  models.Donasi:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      jumlah:
+        type: string
+      metode:
+        type: string
+      mitra:
+        $ref: '#/definitions/models.Mitra'
+      mitra_id:
+        type: integer
+      nama:
+        description: "\U0001F539 Tambahkan kolom nama"
+        type: string
+      pesan:
+        type: string
+      status:
+        type: string
+      updated_at:
+        type: string
+    type: object
   models.ErrorResponse:
     properties:
       code:
@@ -46,6 +70,11 @@ definitions:
         type: string
       deskripsi:
         type: string
+      donasis:
+        description: Relasi ke Donasi
+        items:
+          $ref: '#/definitions/models.Donasi'
+        type: array
       id:
         type: integer
       kategori_mitra:

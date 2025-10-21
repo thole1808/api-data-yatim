@@ -437,6 +437,42 @@ const docTemplate = `{
                 }
             }
         },
+        "models.Donasi": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "jumlah": {
+                    "type": "string"
+                },
+                "metode": {
+                    "type": "string"
+                },
+                "mitra": {
+                    "$ref": "#/definitions/models.Mitra"
+                },
+                "mitra_id": {
+                    "type": "integer"
+                },
+                "nama": {
+                    "description": "🔹 Tambahkan kolom nama",
+                    "type": "string"
+                },
+                "pesan": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "models.ErrorResponse": {
             "type": "object",
             "properties": {
@@ -492,6 +528,13 @@ const docTemplate = `{
                 },
                 "deskripsi": {
                     "type": "string"
+                },
+                "donasis": {
+                    "description": "Relasi ke Donasi",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Donasi"
+                    }
                 },
                 "id": {
                     "type": "integer"
