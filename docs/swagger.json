@@ -43,6 +43,40 @@
                 }
             }
         },
+        "/api/metode-pembayaran/all": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Ambil semua data metode pembayaran beserta jenis pembayarannya tanpa pagination.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Metode Pembayaran"
+                ],
+                "summary": "Get semua Metode Pembayaran",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.GenericResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/mitra/all": {
             "get": {
                 "security": [
@@ -105,6 +139,84 @@
                     },
                     "404": {
                         "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/mitra/personal": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Menambahkan data donasi personal (tanpa relasi langsung ke mitra lain). Data dikirim via form-data beserta bukti transfer.",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Mitra"
+                ],
+                "summary": "Tambah Donasi Personal",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Nama Donatur",
+                        "name": "nama",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Jumlah Donasi (Rp)",
+                        "name": "jumlah",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Pesan Donasi",
+                        "name": "pesan",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Metode Pembayaran (qris/bank)",
+                        "name": "metode",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "Upload Bukti Transfer",
+                        "name": "bukti",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Donasi personal berhasil disimpan",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/models.ErrorResponse"
                         }
