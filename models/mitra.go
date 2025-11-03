@@ -126,18 +126,34 @@ func (KategoriMitra) TableName() string {
 //	func (Donasi) TableName() string {
 //		return "donasi"
 //	}
+// type Donasi struct {
+// 	ID            uint      `json:"id" gorm:"primaryKey"`
+// 	MitraID       uint      `json:"mitra_id"`
+// 	Nama          string    `json:"nama"`
+// 	Jumlah        string    `json:"jumlah"`
+// 	Pesan         string    `json:"pesan"`
+// 	Metode        string    `json:"metode"`
+// 	MetodeID      *uint     // <- gunakan ini jika sekarang pakai relasi ke MetodePembayaran
+// 	Status        string    `json:"status" gorm:"default:'pending'"`
+// 	BuktiTransfer *string   `json:"bukti_transfer,omitempty"`
+// 	Mitra         *Mitra    `json:"mitra,omitempty" gorm:"foreignKey:MitraID;references:ID"`
+// 	CreatedAt     time.Time `json:"created_at"`
+// 	UpdatedAt     time.Time `json:"updated_at"`
+// }
+
 type Donasi struct {
-	ID            uint      `json:"id" gorm:"primaryKey"`
-	MitraID       uint      `json:"mitra_id"`
-	Nama          string    `json:"nama"`
-	Jumlah        string    `json:"jumlah"`
-	Pesan         string    `json:"pesan"`
-	Metode        string    `json:"metode"`
-	Status        string    `json:"status" gorm:"default:'pending'"`
-	BuktiTransfer *string   `json:"bukti_transfer,omitempty"`
-	Mitra         *Mitra    `json:"mitra,omitempty" gorm:"foreignKey:MitraID;references:ID"`
-	CreatedAt     time.Time `json:"created_at"`
-	UpdatedAt     time.Time `json:"updated_at"`
+	ID            uint             `gorm:"primaryKey"`
+	MitraID       uint             `json:"mitra_id"`
+	Nama          string           `json:"nama"`
+	Jumlah        string           `json:"jumlah"`
+	Pesan         string           `json:"pesan,omitempty"`
+	MetodeID      *uint            `json:"metode_id"`
+	Status        string           `json:"status"`
+	BuktiTransfer *string          `json:"bukti_transfer,omitempty"`
+	Mitra         Mitra            `gorm:"foreignKey:MitraID" json:"mitra,omitempty"`
+	Metode        MetodePembayaran `gorm:"foreignKey:MetodeID" json:"metode,omitempty"`
+	CreatedAt     time.Time        `json:"created_at"`
+	UpdatedAt     time.Time        `json:"updated_at"`
 }
 
 func (Donasi) TableName() string {

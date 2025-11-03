@@ -151,8 +151,8 @@ paths:
     post:
       consumes:
       - multipart/form-data
-      description: Menambahkan data donasi personal (tanpa relasi langsung ke mitra
-        lain). Data dikirim via form-data beserta bukti transfer.
+      description: Menambahkan data donasi personal beserta bukti transfer. Metode
+        pembayaran menggunakan metode_id.
       parameters:
       - description: Nama Donatur
         in: formData
@@ -168,10 +168,11 @@ paths:
         in: formData
         name: pesan
         type: string
-      - description: Metode Pembayaran (qris/bank)
+      - description: ID Metode Pembayaran
         in: formData
-        name: metode
-        type: string
+        name: metode_id
+        required: true
+        type: integer
       - description: Upload Bukti Transfer
         in: formData
         name: bukti

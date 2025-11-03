@@ -197,7 +197,7 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Menambahkan data donasi personal (tanpa relasi langsung ke mitra lain). Data dikirim via form-data beserta bukti transfer.",
+                "description": "Menambahkan data donasi personal beserta bukti transfer. Metode pembayaran menggunakan metode_id.",
                 "consumes": [
                     "multipart/form-data"
                 ],
@@ -230,10 +230,11 @@ const docTemplate = `{
                         "in": "formData"
                     },
                     {
-                        "type": "string",
-                        "description": "Metode Pembayaran (qris/bank)",
-                        "name": "metode",
-                        "in": "formData"
+                        "type": "integer",
+                        "description": "ID Metode Pembayaran",
+                        "name": "metode_id",
+                        "in": "formData",
+                        "required": true
                     },
                     {
                         "type": "file",
