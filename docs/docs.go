@@ -59,14 +59,14 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Ambil semua data metode pembayaran beserta jenis pembayarannya tanpa pagination.",
+                "description": "Ambil semua data metode pembayaran beserta jenis pembayaran dan URL QR (proxy)",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Metode Pembayaran"
                 ],
-                "summary": "Get semua Metode Pembayaran",
+                "summary": "Ambil semua Metode Pembayaran",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -76,6 +76,41 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/metode-pembayaran/qr/{filename}": {
+            "get": {
+                "description": "Menampilkan QR image metode pembayaran melalui Golang (proxy dari Laravel storage)",
+                "produces": [
+                    "image/png"
+                ],
+                "tags": [
+                    "Metode Pembayaran"
+                ],
+                "summary": "Proxy QR image metode pembayaran",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Nama file QR",
+                        "name": "filename",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/models.ErrorResponse"
                         }

@@ -60,8 +60,8 @@ paths:
       - Aktivitas
   /api/metode-pembayaran/all:
     get:
-      description: Ambil semua data metode pembayaran beserta jenis pembayarannya
-        tanpa pagination.
+      description: Ambil semua data metode pembayaran beserta jenis pembayaran dan
+        URL QR (proxy)
       produces:
       - application/json
       responses:
@@ -76,7 +76,31 @@ paths:
       security:
       - BearerAuth: []
       - ApiKeyAuth: []
-      summary: Get semua Metode Pembayaran
+      summary: Ambil semua Metode Pembayaran
+      tags:
+      - Metode Pembayaran
+  /api/metode-pembayaran/qr/{filename}:
+    get:
+      description: Menampilkan QR image metode pembayaran melalui Golang (proxy dari
+        Laravel storage)
+      parameters:
+      - description: Nama file QR
+        in: path
+        name: filename
+        required: true
+        type: string
+      produces:
+      - image/png
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: file
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Proxy QR image metode pembayaran
       tags:
       - Metode Pembayaran
   /api/mitra/all:

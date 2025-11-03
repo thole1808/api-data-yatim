@@ -43,6 +43,9 @@ func SetupRouter() *gin.Engine {
 
 	r.GET("/api/mitra/logo/:filename", controllers.ProxyMitraLogo)
 
+	// Proxy QR image metode pembayaran
+	r.GET("/api/metode-pembayaran/qr/:filename", controllers.ProxyMetodePembayaranQR)
+
 	api := r.Group("/api", middlewares.APIKeyMiddleware(), middlewares.AuthMiddleware())
 	{
 		api.GET("/rt", controllers.GetRTPerPage)
