@@ -202,7 +202,6 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -518,24 +517,17 @@ func AddMitraPersonal(c *gin.Context) {
 		return
 	}
 
-	// Upload bukti transfer (opsional)
+	// Upload bukti transfer ke Laravel Storage (opsional)
 	file, err := c.FormFile("bukti")
 	var relativePath *string
 	if err == nil {
-		uploadDir := filepath.Join("storage", "uploads", "mitra", "logo")
-		os.MkdirAll(uploadDir, os.ModePerm)
-
-		ext := filepath.Ext(file.Filename)
-		randomName := helpers.RandomString(40) + ext
-		fullPath := filepath.Join(uploadDir, randomName)
-
-		if err := c.SaveUploadedFile(file, fullPath); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal menyimpan bukti transfer"})
+		// Simpan langsung ke Laravel storage/app/public/uploads/mitra/logo
+		path, err := helpers.SaveToLaravelStorage(file, "uploads/mitra/logo")
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal menyimpan file ke Laravel storage: " + err.Error()})
 			return
 		}
-
-		relative := filepath.Join("uploads", "mitra", "logo", randomName)
-		relativePath = &relative
+		relativePath = &path
 	}
 
 	// Ambil kategori personal (misal ID 3)

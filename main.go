@@ -47,7 +47,7 @@ func main() {
 	// config.DB.FirstOrCreate(&models.User{}, models.User{Username: "adminapi", Password: string(hashedPass)})
 
 	r := routes.SetupRouter()
-	log.Fatal(r.Run(":8085"))
+	log.Fatal(r.Run(":8086"))
 }
 
 func seedAdminAPI() {
